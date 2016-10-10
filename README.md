@@ -170,7 +170,7 @@ vagrant up --provider virtualbox
 
 A python script is also provided to monitor the health of the cluster and retrieve CPU and RAM statistic.
 
-It requires the elasticsearch python library.
+It requires the elasticsearch python library and python 3.
 ```
 pip install elasticsearch
 ```
