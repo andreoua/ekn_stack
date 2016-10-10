@@ -8,6 +8,8 @@ This has been tested on:
 * RHEL 7
 * Fedora 22
 * Fedora 24
+* Centos 6
+* Ubuntu 14.4
 
 The latest versions of the available services are installed to ensure compatibility.
 Ansible version 2.1.2.0 was used durig the test and in cases where the target 
@@ -129,6 +131,13 @@ In the case of VirtualBox the VM created are limited to 1 CPU and 512MB of memor
 
 In order to use the Vagrantfile configurations you must copy the corresponding Vagrantfile to a directory and provide
 all the playbooks and roles in a subdirectory names `provisioning`.
+
+If you choose to store the keys elsewhere you will need to modify the instances of `config.ssh.private_key_path` and
+the provision lines `node.vm.provision`
+```
+config line:      config.ssh.private_key_path = ["simpleit.pri", "~/.vagrant.d/insecure_private_key"]
+provision line:   node.vm.provision "file", source: "simpleit.pub", destination: "~/.ssh/authorized_keys"
+```
 
 e.g.
 Provisioning for both VirtualBox and Docker
