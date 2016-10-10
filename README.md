@@ -18,7 +18,7 @@ package is required.
 
 ## Usage
 
-You must the location where you want to store the playbooks. In the same location you 
+You must decide on the location where you want to store the playbooks. The same location  
 must also have the roles folder with all the required roles that used. You may choose 
 to either fetch them there directly or create links to their original locations.
 
