@@ -1,0 +1,14 @@
+---
+
+  
+  - name: "Installing & Configuring Elasticserver"
+    include: elastic.yml
+
+  - name: "Installing & Configuring Kibana"
+    include: kibana.yml
+
+  - name: "Install & Configuring NGINX"
+    include: nginx.yml
+  
+  - name: "Creating NGINX user admin"
+    include: nginx_passwd.yml username="admin" password="secret"

@@ -1,0 +1,11 @@
+---
+
+- hosts: [web_servers]
+  
+  tasks:
+    - name: Set password for "{{username}}"
+      shell: printf "{{ username }}:$(openssl passwd -crypt {{ password }})\n" >> /etc/nginx/passwords
+
+  vars:
+    ansible_become: true
+

@@ -1,0 +1,35 @@
+---
+
+- hosts: [elastic_servers]
+  roles:
+    - { role: elasticsearch, 
+      es_instance_name: "node1",
+      es_heap_size: "1g",
+      es_config: {
+        cluster.name: "SimpleIT",
+        network.host: "{{ ansible_hostname }}",
+        discovery.zen.ping.unicast.hosts: "{{ groups['elastic_servers'] | join(',') }}",
+        http.port: 9200,
+        transport.tcp.port: 9300,
+        node.data: true,
+        node.master: true,
+        bootstrap.mlockall: true
+      }
+    }
+
+  environment:
+      http_proxy: http://10.144.1.10:8080
+      https_proxy: http://10.144.1.10:8080
+  vars:
+    proxy_server: "http://10.144.1.10:8080"
+    proxy_host: "10.144.1.10"
+    proxy_port: "8080"
+    ansible_become: true
+    es_version: "2.4.0"
+    es_plugins:
+      - plugin: license
+      - plugin: marvel-agent
+    proxy_env:
+      http_proxy: "{{ proxy_server }}"
+      https_proxy: "{{ proxy_server }}"
+

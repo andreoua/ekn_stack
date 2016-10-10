@@ -1,0 +1,11 @@
+---
+
+
+- name: RedHat - Install Yum
+  shell: dnf -y install yum
+  
+
+#- name: RedHat - Ensure Java is installed
+#  dnf: name=yum state=latest
+#  when: ansible_os_family == 'RedHat'
+

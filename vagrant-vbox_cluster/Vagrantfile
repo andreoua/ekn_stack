@@ -1,0 +1,53 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure("2") do |config|
+  
+  config.vm.box = "centos/6"
+
+  config.vm.provider "virtualbox" do |vbox|
+    vbox.linked_clone = true
+    vbox.memory = 512
+    vbox.cpus = 1
+  end
+
+  config.ssh.private_key_path = ["simpleit.pri", "~/.vagrant.d/insecure_private_key"]
+  config.ssh.insert_key = false
+  
+
+  config.vm.define "elastic_node1" do |node1|
+    node1.vm.box = config.vm.box
+    node1.vm.provision "file", source: "simpleit.pub", destination: "~/.ssh/authorized_keys"
+  end
+  config.vm.define "elastic_node2" do |node2|
+    node2.vm.box = config.vm.box
+    node2.vm.provision "file", source: "simpleit.pub", destination: "~/.ssh/authorized_keys"
+  end
+  config.vm.define "kibana_server" do |kibana|
+    kibana.vm.box = config.vm.box
+    kibana.vm.provision "file", source: "simpleit.pub", destination: "~/.ssh/authorized_keys"
+  end
+  config.vm.define "nginx_node1" do |nginx|
+    nginx.vm.box = config.vm.box
+    nginx.vm.provision "file", source: "simpleit.pub", destination: "~/.ssh/authorized_keys"
+  end
+  config.vm.define "elastic_node3" do |node3|
+    node3.vm.box = config.vm.box
+    node3.vm.provision "file", source: "simpleit.pub", destination: "~/.ssh/authorized_keys"
+    node3.vm.provision "ansible" do |ansible|
+      ansible.limit = 'all'
+      ansible.playbook = "provisioning/cluster.yml"
+      #ansible.verbose = "vvv"
+      ansible.groups = {
+	"elastic_servers" => ["elastic_node1", "elastic_node2", "elastic_node3"],
+        "elastic_node" => ["elastic_client_node"],
+        "kibana_server" => ["kibana_server"],
+	"web_servers" => ["nginx_node1"]
+      }
+    end  
+  end
+end
