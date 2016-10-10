@@ -28,10 +28,13 @@ es = Elasticsearch(cli_arguments.hosts,
                    http_auth=(cli_arguments.username, cli_arguments.password),
                    port=cli_arguments.port)
 
-print('The cluster\'s health status is: ', es.cluster.health()['status'])
+cluster_health = es.cluster.health()['status']
+cluster_stats = es.cluster.stats()
+
+print('The cluster\'s health status is: ', cluster_health)
 
 print('Cluster CPU load: {}%\nCluster RAM utilization: {}%'.format(
-    es.cluster.stats()['nodes']['process']['cpu']['percent'],
-    es.cluster.stats()['nodes']['jvm']['mem']['heap_used_in_bytes'] /
-    es.cluster.stats()['nodes']['jvm']['mem']['heap_max_in_bytes'])
+    cluster_stats['nodes']['process']['cpu']['percent'],
+    cluster_stats['nodes']['jvm']['mem']['heap_used_in_bytes'] /
+    cluster_stats['nodes']['jvm']['mem']['heap_max_in_bytes'])
      )
